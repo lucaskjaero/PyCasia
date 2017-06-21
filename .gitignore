@@ -89,3 +89,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Pycharm
+.idea*
+.idea/vcs.xml
+.idea/markdown-navigator.xml
