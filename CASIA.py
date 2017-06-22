@@ -3,8 +3,8 @@ import struct
 import zipfile
 
 from codecs import decode
-from os import remove
-from os.path import isdir, isfile
+from os import makedirs, remove
+from os.path import expanduser, isdir, isfile
 from urllib.request import urlretrieve
 
 import numpy as np
@@ -20,7 +20,7 @@ class CASIA:
     """
     Class to download and use data from the CASIA dataset.
     """
-    def __init__(self):
+    def __init__(self, path=None):
         self.datasets = {
             "competition-gnt": {
                 "url": "http://www.nlpr.ia.ac.cn/databases/Download/competition/competition-gnt.zip",
@@ -40,6 +40,15 @@ class CASIA:
             },
         }
         self.character_sets = [dataset for dataset in self.datasets if self.datasets[dataset]["type"] == "GNT"]
+
+        # Set the dataset path
+        if path is None:
+            self.base_dataset_path = expanduser("~/CASIA_data/")
+        else:
+            self.base_dataset_path = expanduser(path)
+
+        if not isdir(self.base_dataset_path):
+            makedirs(self.base_dataset_path)
 
     def get_all_datasets(self):
         """
@@ -62,7 +71,8 @@ class CASIA:
         """
         # If the dataset is present, no need to download anything.
         success = True
-        if not isdir(dataset):
+        dataset_path = self.base_dataset_path + dataset
+        if not isdir(dataset_path):
 
             # Try 5 times to download. The download page is unreliable, so we need a few tries.
             was_error = False
@@ -70,7 +80,7 @@ class CASIA:
 
                 # Guard against trying again if successful
                 if iteration == 0 or was_error is True:
-                    zip_path = dataset + ".zip"
+                    zip_path = dataset_path + ".zip"
 
                     # Download zip files if they're not there
                     if not isfile(zip_path):
@@ -82,10 +92,10 @@ class CASIA:
                             was_error = True
 
                     # Unzip the data files
-                    if not isdir(dataset):
+                    if not isdir(dataset_path):
                         try:
                             with zipfile.ZipFile(zip_path) as zip_archive:
-                                zip_archive.extractall(path=dataset)
+                                zip_archive.extractall(path=dataset_path)
                                 zip_archive.close()
                         except Exception as ex:
                             print("Error unzipping %s: %s" % (zip_path, ex))
@@ -128,7 +138,8 @@ class CASIA:
         assert self.get_dataset(dataset) is True, "Datasets aren't properly downloaded, " \
                                                   "rerun to try again or download datasets manually."
 
-        for path in glob.glob(dataset + "/*.gnt"):
+        dataset_path = self.base_dataset_path + dataset
+        for path in glob.glob(dataset_path + "/*.gnt"):
             for image, label in self.load_gnt_file(path):
                 yield image, label
 

@@ -20,7 +20,8 @@ class TestCASIA(TestCase):
         # We don't need to test get_dataset because this runs them all
         self.casia.get_all_datasets()
         for dataset in self.casia.datasets:
-            self.assertTrue(isdir(dataset))
+            dataset_path = self.casia.base_dataset_path + dataset
+            self.assertTrue(isdir(dataset_path))
 
     def test_load_character_images(self):
         for image, character in self.casia.load_character_images():
