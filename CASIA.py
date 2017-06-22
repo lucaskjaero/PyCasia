@@ -3,10 +3,8 @@ import struct
 import zipfile
 
 from codecs import decode
-from math import ceil
-from os import listdir, makedirs, remove
+from os import remove
 from os.path import isdir, isfile
-from time import clock
 from urllib.request import urlretrieve
 
 import numpy as np
@@ -23,8 +21,6 @@ class CASIA:
     Class to download and use data from the CASIA dataset.
     """
     def __init__(self):
-        assert get_all_datasets() is True, "Datasets aren't properly loaded, " \
-                                       "rerun to try again or download datasets manually."
         self.datasets = {
             "competition-gnt": {
                 "url": "http://www.nlpr.ia.ac.cn/databases/Download/competition/competition-gnt.zip",
@@ -95,7 +91,10 @@ class CASIA:
                             print("Error unzipping %s: %s" % (zip_path, ex))
                             # Usually the error is caused by a bad zip file.
                             # Delete it so the program will try to download it again.
-                            remove(zip_path)
+                            try:
+                                remove(zip_path)
+                            except FileNotFoundError:
+                                pass
                             was_error = True
 
             if was_error:
@@ -114,7 +113,7 @@ class CASIA:
         """
         for dataset in self.character_sets:
             assert self.get_dataset(dataset) is True, "Datasets aren't properly downloaded, " \
-                                                 "rerun to try again or download datasets manually."
+                                                      "rerun to try again or download datasets manually."
 
         for dataset in self.character_sets:
             for image, label in self.load_dataset(dataset):
@@ -127,10 +126,10 @@ class CASIA:
         :return:  Yields (image, label) pairs. Pillow.Image.Image
         """
         assert self.get_dataset(dataset) is True, "Datasets aren't properly downloaded, " \
-                                             "rerun to try again or download datasets manually."
+                                                  "rerun to try again or download datasets manually."
 
         for path in glob.glob(dataset + "/*.gnt"):
-            for image, label in load_gnt_file(path):
+            for image, label in self.load_gnt_file(path):
                 yield image, label
 
     @staticmethod
@@ -159,7 +158,7 @@ class CASIA:
 
                 # Comes out as a tuple of chars. Need to be combined. Encoded as gb2312, gotta convert to unicode.
                 label = decode(raw_label[0] + raw_label[1], encoding="gb2312")
-                # Create an array of bytes for the image, match it to the proper dimensions, and turn it into a PIL image.
+                # Create an array of bytes for the image, match it to the proper dimensions, and turn it into an image.
                 image = toimage(np.array(photo_bytes).reshape(height, width))
 
                 yield image, label
