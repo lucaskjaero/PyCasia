@@ -13,14 +13,14 @@ import numpy as np
 
 from scipy.misc import toimage
 
-from tqdm import tqdm
+from statusbar import DLProgress
 
 __author__ = 'Lucas Kjaero'
 
 
 class CASIA:
     """
-    Class to download and use data from the CASIA dataset. 
+    Class to download and use data from the CASIA dataset.
     """
     def __init__(self):
         assert get_all_datasets() is True, "Datasets aren't properly loaded, " \
@@ -138,7 +138,7 @@ class CASIA:
         """
         Load characters and images from a given GNT file.
         :param filename: The file path to load.
-        :param silent: If not 
+        :param silent: If not
         :return: (image: np.array, character) tuples
         """
         if not silent:
@@ -163,17 +163,3 @@ class CASIA:
                 image = toimage(np.array(photo_bytes).reshape(height, width))
 
                 yield image, label
-
-
-class DLProgress(tqdm):
-    """ Class to show progress on dataset download """
-    # Progress bar code adapted from a Udacity machine learning project.
-    last_block = 0
-
-    def __init__(self):
-        self.total = 0
-
-    def hook(self, block_num=1, block_size=1, total_size=None):
-        self.total = total_size
-        self.update((block_num - self.last_block) * block_size)
-        self.last_block = block_num
