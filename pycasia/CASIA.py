@@ -11,7 +11,7 @@ import numpy as np
 
 from scipy.misc import toimage
 
-from statusbar import DLProgress
+from .statusbar import DLProgress
 
 __author__ = 'Lucas Kjaero'
 

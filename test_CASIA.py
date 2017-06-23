@@ -3,12 +3,12 @@ from unittest import TestCase
 
 from PIL import Image
 
-from CASIA import CASIA
+from pycasia import CASIA
 
 
 class TestCASIA(TestCase):
     def setUp(self):
-        self.casia = CASIA()
+        self.casia = CASIA.CASIA()
 
         # We need at least one dataset to run tests on. Might as well try the smallest one.
         self.casia.get_dataset("HWDB1.1tst_gnt")
