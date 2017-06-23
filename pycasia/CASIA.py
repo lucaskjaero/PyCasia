@@ -143,7 +143,7 @@ class CASIA:
 
                 label_count[label] = label_count[label] + 1
 
-                image.save(label_path + "/%s_%s.jpg" % (label, label))
+                image.save(label_path + "/%s_%s.jpg" % (label, label_count[label]))
 
     def load_character_images(self):
         """
