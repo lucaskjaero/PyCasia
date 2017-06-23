@@ -3,6 +3,7 @@ import struct
 import zipfile
 
 from codecs import decode
+from collections import Counter
 from os import makedirs, remove
 from os.path import expanduser, isdir, isfile
 from urllib.request import urlretrieve
@@ -115,6 +116,34 @@ class CASIA:
                 success = False
 
         return success
+
+    def get_raw(self):
+        """
+        Used to create easily introspectable image directories of all the data.
+        :return:
+        """
+        assert self.get_all_datasets() is True, "Datasets aren't properly downloaded, " \
+                                                "rerun to try again or download datasets manually."
+
+        for dataset in self.datasets:
+            # Create a folder to hold the dataset
+            prefix_path = self.base_dataset_path + "raw/" + dataset
+            if not isdir(prefix_path):
+                makedirs(prefix_path)
+
+            label_count = Counter()
+
+            for image, label in self.load_dataset(dataset):
+                #assert type(image) == "PIL.Image.Image", "image is not the correct type. "
+
+                # Make sure there's a folder for the class label.
+                label_path = prefix_path + "/" + label
+                if not isdir(label_path):
+                    makedirs(label_path)
+
+                label_count[label] = label_count[label] + 1
+
+                image.save(label_path + "/%s_%s.jpg" % (label, label))
 
     def load_character_images(self):
         """
