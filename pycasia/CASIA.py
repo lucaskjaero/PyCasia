@@ -41,6 +41,7 @@ class CASIA:
             },
         }
         self.character_sets = [dataset for dataset in self.datasets if self.datasets[dataset]["type"] == "GNT"]
+        self.sentence_sets = [dataset for dataset in self.datasets if self.datasets[dataset]["type"] == "DGR"]
 
         # Set the dataset path
         if path is None:
@@ -162,7 +163,7 @@ class CASIA:
         """
         Load a directory of gnt files. Yields the image and label in tuples.
         :param dataset: The directory to load.
-        :return:  Yields (image, label) pairs. Pillow.Image.Image
+        :return:  Yields (Pillow.Image.Image, label) pairs.
         """
         assert self.get_dataset(dataset) is True, "Datasets aren't properly downloaded, " \
                                                   "rerun to try again or download datasets manually."
@@ -178,7 +179,7 @@ class CASIA:
         Load characters and images from a given GNT file.
         :param filename: The file path to load.
         :param silent: If not
-        :return: (image: np.array, character) tuples
+        :return: (image: Pillow.Image.Image, character) tuples
         """
         if not silent:
             print("Loading file: %s" % filename)
