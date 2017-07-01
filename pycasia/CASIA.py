@@ -136,10 +136,7 @@ class CASIA:
 
             label_count = Counter()
 
-            if verbose:
-                print("Loading %s" % dataset)
-            
-            for image, label in tqdm(self.load_dataset(dataset)):
+            for image, label in tqdm(self.load_dataset(dataset, verbose=verbose)):
                 #assert type(image) == "PIL.Image.Image", "image is not the correct type. "
 
                 # Make sure there's a folder for the class label.
@@ -161,10 +158,7 @@ class CASIA:
                                                       "rerun to try again or download datasets manually."
 
         for dataset in self.character_sets:
-            if verbose:
-                print("Loading %s" % dataset)
-
-            for image, label in self.load_dataset(dataset):
+            for image, label in self.load_dataset(dataset, verbose=verbose):
                 yield image, label
 
     def load_dataset(self, dataset, verbose=True):
