@@ -12,6 +12,8 @@ import numpy as np
 
 from scipy.misc import toimage
 
+from tqdm import tqdm
+
 from .statusbar import DLProgress
 
 __author__ = 'Lucas Kjaero'
@@ -60,7 +62,7 @@ class CASIA:
         """
         success = True
 
-        for dataset in self.datasets:
+        for dataset in tqdm(self.datasets):
             individual_success = self.get_dataset(dataset)
             if not individual_success:
                 success = False
@@ -118,7 +120,7 @@ class CASIA:
 
         return success
 
-    def get_raw(self):
+    def get_raw(self, verbose=True):
         """
         Used to create easily introspectable image directories of all the data.
         :return:
@@ -134,7 +136,10 @@ class CASIA:
 
             label_count = Counter()
 
-            for image, label in self.load_dataset(dataset):
+            if verbose:
+                print("Loading %s" % dataset)
+            
+            for image, label in tqdm(self.load_dataset(dataset)):
                 #assert type(image) == "PIL.Image.Image", "image is not the correct type. "
 
                 # Make sure there's a folder for the class label.
@@ -146,7 +151,7 @@ class CASIA:
 
                 image.save(label_path + "/%s_%s.jpg" % (label, label_count[label]))
 
-    def load_character_images(self):
+    def load_character_images(self, verbose=True):
         """
         Generator to load all images in the dataset. Yields (image, character) pairs until all images have been loaded.
         :return: (Pillow.Image.Image, string) tuples
@@ -156,10 +161,13 @@ class CASIA:
                                                       "rerun to try again or download datasets manually."
 
         for dataset in self.character_sets:
+            if verbose:
+                print("Loading %s" % dataset)
+
             for image, label in self.load_dataset(dataset):
                 yield image, label
 
-    def load_dataset(self, dataset):
+    def load_dataset(self, dataset, verbose=True):
         """
         Load a directory of gnt files. Yields the image and label in tuples.
         :param dataset: The directory to load.
@@ -168,21 +176,21 @@ class CASIA:
         assert self.get_dataset(dataset) is True, "Datasets aren't properly downloaded, " \
                                                   "rerun to try again or download datasets manually."
 
+        if verbose:
+            print("Loading %s" % dataset)
+
         dataset_path = self.base_dataset_path + dataset
-        for path in glob.glob(dataset_path + "/*.gnt"):
+        for path in tqdm(glob.glob(dataset_path + "/*.gnt")):
             for image, label in self.load_gnt_file(path):
                 yield image, label
 
     @staticmethod
-    def load_gnt_file(filename, silent=False):
+    def load_gnt_file(filename):
         """
         Load characters and images from a given GNT file.
         :param filename: The file path to load.
-        :param silent: If not
         :return: (image: Pillow.Image.Image, character) tuples
         """
-        if not silent:
-            print("Loading file: %s" % filename)
 
         # Thanks to nhatch for the code to read the GNT file, available at https://github.com/nhatch/casia
         with open(filename, "rb") as f:
