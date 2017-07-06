@@ -4,7 +4,7 @@ from setuptools import find_packages
 setup(
     name = "Pycasia",
     packages = find_packages(exclude=['contrib', 'docs', 'tests*']),
-    version = "v0.1",
+    version = "v0.2",
     description = "Pycasia is an open source library to work with the CASIA Chinese Handwriting library.",
     author = "Lucas Kjaero",
     author_email = "Lucas@LucasKjaero.com",
