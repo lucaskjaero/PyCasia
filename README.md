@@ -1,5 +1,7 @@
 # PyCasia
 Open source library to work with the [CASIA Chinese Handwriting dataset](http://www.nlpr.ia.ac.cn/databases/handwriting/Home.html).
+## Installation
+PyCasia is on the [Python Package Index](https://pypi.python.org/pypi/Pycasia), so installation is as easy as `pip install pycasia`. While it may run on Python 2, only Python 3 is officially supported.
 ## Using the library
 The pycasia.CASIA object is the interface for all the data. You can use it to explore the dataset, or use it as a base class for a more complicated use.
 
