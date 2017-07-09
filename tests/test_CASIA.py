@@ -25,5 +25,8 @@ class TestCASIA(TestCase):
 
     def test_load_character_images(self):
         for image, character in self.casia.load_character_images():
-            self.assertEquals(type(image), Image.Image)
-            self.assertEquals(len(character), 1)
+            self.assertEqual(type(image), Image.Image)
+            self.assertEqual(len(character), 1)
+
+if __name__ == '__main__':
+    unittest.main()
