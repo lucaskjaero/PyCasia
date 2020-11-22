@@ -5,6 +5,8 @@ from PIL import Image
 
 from pycasia import CASIA
 
+import unittest
+
 
 class TestCASIA(TestCase):
     def setUp(self):
