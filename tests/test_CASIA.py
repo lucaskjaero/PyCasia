@@ -1,9 +1,10 @@
 from os.path import isdir
 from unittest import TestCase
-
 from PIL import Image
 
 from pycasia import CASIA
+
+import unittest
 
 
 class TestCASIA(TestCase):
