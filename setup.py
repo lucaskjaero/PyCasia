@@ -21,5 +21,5 @@ setup(
         "Topic :: Text Processing :: Linguistic",
     ],
     long_description=open('README.txt').read(),
-    install_requires=['numpy', 'Pillow', 'scipy', 'tqdm'],
+    install_requires=['numpy', 'Pillow', 'tqdm'],
 )
