@@ -98,3 +98,4 @@ ENV/
 # Dataset
 HWDB*
 competition-*
+.DS_Store
