@@ -6,8 +6,8 @@ setup(
     packages = find_packages(exclude=['contrib', 'docs', 'tests*']),
     version = "v0.2",
     description = "Pycasia is an open source library to work with the CASIA Chinese Handwriting library.",
-    author = "Lucas Kjaero",
-    author_email = "Lucas@LucasKjaero.com",
+    author = "Lucas Kjaero-Zhang",
+    author_email = "pycasia@LucasKjaeroZhang.com",
     url = "https://github.com/lucaskjaero/pycasia",
     keywords = ["handwriting", "Chinese", "CASIA"],
     classifiers = [
@@ -21,5 +21,5 @@ setup(
         "Topic :: Text Processing :: Linguistic",
     ],
     long_description=open('README.txt').read(),
-    install_requires=['numpy', 'Pillow', 'scipy', 'tqdm'],
+    install_requires=['numpy', 'Pillow', 'tqdm'],
 )

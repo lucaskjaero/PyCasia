@@ -10,7 +10,7 @@ from urllib.request import urlretrieve
 
 import numpy as np
 
-from scipy.misc import toimage
+from PIL.Image import fromarray
 
 from tqdm import tqdm
 
@@ -202,6 +202,6 @@ class CASIA:
                 # Comes out as a tuple of chars. Need to be combined. Encoded as gb2312, gotta convert to unicode.
                 label = decode(raw_label[0] + raw_label[1], encoding="gb2312")
                 # Create an array of bytes for the image, match it to the proper dimensions, and turn it into an image.
-                image = toimage(np.array(photo_bytes).reshape(height, width))
+                image = fromarray(np.array(photo_bytes).reshape(height, width))
 
                 yield image, label

@@ -29,5 +29,6 @@ class TestCASIA(TestCase):
             self.assertEqual(type(image), Image.Image)
             self.assertEqual(len(character), 1)
 
+
 if __name__ == '__main__':
     unittest.main()
