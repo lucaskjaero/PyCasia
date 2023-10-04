@@ -7,7 +7,7 @@ authors = ["Lucas Kjaero <lucas@lucaskjaero.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 numpy = "^1.19.4"
-pillow = "^8.0.1"
+pillow = "^10.0.1"
 tqdm = "^4.53.0"
 
 [tool.poetry.dev-dependencies]
